@@ -11,3 +11,5 @@ server/venv/
 # VS Code or editor files (可選)
 .vscode/
 *.swp
+server/data_log.csv
+server/data_log.csv
