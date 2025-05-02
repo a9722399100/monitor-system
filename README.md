@@ -14,7 +14,8 @@ monitor-system/
 │   └── include/        # nlohmann/json.hpp header
 ├── server/             # Flask server to receive and process monitoring data
 │   ├── server.py
-│   └── requirements.txt
+│   ├── requirements.txt
+│   └── Dockerfile
 ```
 
 ---
@@ -26,6 +27,7 @@ monitor-system/
 - 🔄 Data sent every 5 seconds to Flask server via HTTP POST
 - 🧠 Flask server logs and parses incoming data
 - ⚠️ Temperature warning and critical thresholds (>= 80°C / 90°C)
+- 🐳 Containerized Flask server for easy deployment
 - 🛠️ Designed to be easily extendable to Docker, CI/CD, or database storage
 
 ---
@@ -35,6 +37,7 @@ monitor-system/
 - C++17 (`std::thread`, `std::ifstream`, `libcurl`, `nlohmann/json`)
 - Python 3 (`Flask`)
 - Linux system APIs (`/proc/stat`, `/proc/meminfo`, `/sys/class/thermal`)
+- Docker (container deployment)
 - Git (version control)
 - JSON over HTTP (REST-style communication)
 
@@ -42,7 +45,7 @@ monitor-system/
 
 ## 📥 How to Run
 
-### 🔧 Server (Python Flask)
+### 🔧 Server (Python Flask - Native)
 
 ```bash
 cd server
@@ -68,6 +71,18 @@ make
 
 ---
 
+### 🐳 Run Flask Server with Docker
+
+```bash
+cd server
+docker build -t monitor-server .
+docker run -d -p 8000:8000 monitor-server
+```
+
+> Flask API will be available at http://localhost:8000/data
+
+---
+
 ## 📋 Sample Output
 
 **Client:**
@@ -89,7 +104,7 @@ Received data: {'cpu_usage': 12.4, 'memory_usage': 56.7, 'temperature': 49.2}
 
 ## 🧪 Future Enhancements (Planned)
 
-- [ ] Dockerfile & docker-compose support
+- [ ] Docker Compose for client/server orchestration
 - [ ] SQLite / CSV data storage
 - [ ] Real-time web dashboard (Chart.js + Flask)
 - [ ] GitHub Actions CI for build & linting
