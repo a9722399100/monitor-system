@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>System Monitor Dashboard</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <h2>System Monitor (CPU / Memory / Temp)</h2>
+  <canvas id="myChart" width="800" height="400"></canvas>
+  <script>
+    fetch('/history')
+      .then(response => response.json())
+      .then(data => {
+        const labels = data.map(row => row.timestamp);
+        const cpuData = data.map(row => parseFloat(row.cpu_usage));
+        const memData = data.map(row => parseFloat(row.memory_usage));
+        const tempData = data.map(row => row.temperature ? parseFloat(row.temperature) : null);
+
+        const ctx = document.getElementById('myChart').getContext('2d');
+        new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: labels,
+            datasets: [
+              {
+                label: 'CPU Usage (%)',
+                borderColor: 'red',
+                data: cpuData,
+                fill: false
+              },
+              {
+                label: 'Memory Usage (%)',
+                borderColor: 'blue',
+                data: memData,
+                fill: false
+              },
+              {
+                label: 'Temperature (°C)',
+                borderColor: 'green',
+                data: tempData,
+                fill: false
+              }
+            ]
+          },
+          options: {
+            responsive: true,
+            scales: {
+              x: { display: true },
+              y: { beginAtZero: true }
+            }
+          }
+        });
+      });
+  </script>
+</body>
+</html>
