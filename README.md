@@ -15,7 +15,10 @@ monitor-system/
 ├── server/             # Flask server to receive and process monitoring data
 │   ├── server.py
 │   ├── requirements.txt
-│   └── Dockerfile
+│   ├── Dockerfile
+│   ├── data_log.csv
+│   └── templates/
+│       └── dashboard.html
 ```
 
 ---
@@ -25,9 +28,10 @@ monitor-system/
 - 📡 Real-time CPU & Memory usage monitoring
 - 🌡️ CPU temperature collection (with fallback handling on virtual machines)
 - 🔄 Data sent every 5 seconds to Flask server via HTTP POST
-- 🧠 Flask server logs and parses incoming data
+- 🧠 Flask server logs and parses incoming data to `data_log.csv`
 - ⚠️ Temperature warning and critical thresholds (>= 80°C / 90°C)
 - 🐳 Containerized Flask server for easy deployment
+- 📈 Real-time dashboard with Chart.js at `/dashboard`
 - 🛠️ Designed to be easily extendable to Docker, CI/CD, or database storage
 
 ---
@@ -40,6 +44,7 @@ monitor-system/
 - Docker (container deployment)
 - Git (version control)
 - JSON over HTTP (REST-style communication)
+- Chart.js (real-time graph rendering)
 
 ---
 
@@ -55,7 +60,7 @@ pip install flask
 python server.py
 ```
 
-> Server will run on `http://0.0.0.0:8000/data`
+> Server will run on `http://localhost:8000`
 
 ---
 
@@ -81,6 +86,8 @@ docker run -d -p 8000:8000 monitor-server
 
 > Flask API will be available at http://localhost:8000/data
 
+---
+
 ### 📁 Docker Build Clean-Up with .dockerignore
 
 This project uses a `.dockerignore` file to prevent unnecessary files from being included in the Docker image, such as:
@@ -90,6 +97,21 @@ This project uses a `.dockerignore` file to prevent unnecessary files from being
 - `.git/`, `.vscode/`
 
 This helps reduce image size and speeds up build time.
+
+---
+
+## 🌐 Web Interface
+
+| Endpoint | Description |
+|----------|-------------|
+| `/dashboard` | Chart.js-based report showing CPU / Memory / Temperature trends |
+| `/history`   | JSON API returning full `data_log.csv` records |
+
+To test manually:
+
+```bash
+curl -X POST http://localhost:8000/data -H "Content-Type: application/json" -d '{"cpu_usage":22.5, "memory_usage":57.3, "temperature":64.2}'
+```
 
 ---
 
@@ -115,12 +137,23 @@ Received data: {'cpu_usage': 12.4, 'memory_usage': 56.7, 'temperature': 49.2}
 ## 🧪 Future Enhancements (Planned)
 
 - [ ] Docker Compose for client/server orchestration
-- [ ] SQLite / CSV data storage
-- [ ] Real-time web dashboard (Chart.js + Flask)
+- [ ] SQLite / CSV viewer or browser download
 - [ ] GitHub Actions CI for build & linting
 - [ ] Multi-device support via `device_id`
 
 ---
+
+
+---
+
+## 📁 Runtime Output Notice
+
+The file `server/data_log.csv` is automatically created by `server.py` to log incoming monitoring data.
+
+This file is intentionally excluded from Git version control via `.gitignore`, because it contains runtime-generated content.
+
+You don't need to manually create this file — it will be created and appended to automatically.
+
 
 ## 📄 License
 
