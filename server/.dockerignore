@@ -1,0 +1,17 @@
+# 忽略 Python 虛擬環境
+venv/
+
+# 忽略 pycache
+__pycache__/
+*.pyc
+
+# 忽略 Git
+.git/
+.gitignore
+
+# 忽略 VSCode 開發設定（可選）
+.vscode/
+
+# 其他你不想打包的檔案
+*.swp
+*.log
