@@ -1,0 +1,13 @@
+# C++ build output
+client/monitor_client
+
+# Python cache
+server/__pycache__/
+*.pyc
+
+# Python venv
+server/venv/
+
+# VS Code or editor files (可選)
+.vscode/
+*.swp
