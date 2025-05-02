@@ -81,6 +81,16 @@ docker run -d -p 8000:8000 monitor-server
 
 > Flask API will be available at http://localhost:8000/data
 
+### 📁 Docker Build Clean-Up with .dockerignore
+
+This project uses a `.dockerignore` file to prevent unnecessary files from being included in the Docker image, such as:
+
+- `venv/` (Python virtual environment)
+- `__pycache__/`, `*.pyc`
+- `.git/`, `.vscode/`
+
+This helps reduce image size and speeds up build time.
+
 ---
 
 ## 📋 Sample Output
